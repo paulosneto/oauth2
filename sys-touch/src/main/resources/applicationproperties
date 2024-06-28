@@ -1,0 +1,28 @@
+spring.application.name=sys-touch
+
+#configurações para poder consumir o banco criado via docker
+
+# mantem o consumo ao banco sempre ativo todas as vezes que o servidor reiniciar
+spring.sql.init.mode = always  
+
+# Tarda a execução dos "selects" dando tempo suficiente para o banco poder criar as tabelas caso nao exista
+spring.jpa.defer-datasource-initialization = true
+
+# Atualização das tabelas e do esquema de forma automática
+spring.jpa.hibernate.ddl-auto = update
+
+# endereço usado pra o banco
+spring.datasource.url = jdbc:mysql://localhost:3306/systouch_db
+#spring.datasource.url = jdbc:mysql://${MYSQL_HOST:localhost}:3306/systouch_db
+
+# login usado pro banco
+spring.datasource.username = root
+
+# senha usada pro banco
+spring.datasource.password = root
+
+# Driver de conexão usando mysql
+spring.datasource.driver-class-name= com.mysql.cj.jdbc.Driver
+
+# Printa no terminal qualquer escrita de sql
+spring.jpa.show-sql = true
