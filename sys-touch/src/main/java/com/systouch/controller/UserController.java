@@ -33,20 +33,23 @@ public class UserController {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    // Transação que irá criar o usuário e armazenar no banco
     @Transactional
     @PostMapping
     public ResponseEntity<User> newUser(@RequestBody UserDTO dto){
 
+        // Cria a regra para armazenar em usuários do tipo padão "BASIC"
         var basicRole = this.roleRepository.findByName(Role.Values.BASIC.name());
-        //String t = dto.roles().;
-        //var basicRole = this.roleRepository.findByName(dto.roles().toString());
 
+        // Pesquisa se o usuário logado existe no banco
         var userFromDB = this.userRepository.findByUserName(dto.username());
         User newUser;
 
+        // Verificação para saber se existe cadastro para o usuario, se existir, retorna erro
         if(userFromDB.isPresent()){
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
         }else{
+            // Registra o usuario caso o mesmo não exista no banco.
              newUser = new User(dto);
                 newUser.setUserName(dto.username());
                 newUser.setPassword(bCryptPasswordEncoder.encode(dto.password()));
@@ -59,6 +62,7 @@ public class UserController {
     }
 
 
+    // Lista somente se os usuarios forem ADMIN
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<List<User>> listUsers(){
