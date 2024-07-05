@@ -1,6 +1,6 @@
 package com.systouch.domain;
 
-import com.systouch.dto.RoleDTO;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -59,10 +59,7 @@ public class Role {
         this.name = name;
     }
 
-    /*public Role(RoleDTO dto){
-        this.name = dto.name();
-        this.Role.Values = dto.values();
-    }*/
+
 
 
 }
