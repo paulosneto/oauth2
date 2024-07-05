@@ -7,6 +7,6 @@
 
 5- Será usado um tipo de criptografia assimétrica (usando uma chave privada e uma chave publica)
  * Criando chave privada pelo terminal(wsl windows) 
-	openssl genrsa > arquivo.key
+	### openssl genrsa > arquivo.key
  * Gerando chave publica a partir da privada
-	openssl rsa -in arquivo.key -pubout -out arquivo.pub  
+	### openssl rsa -in arquivo.key -pubout -out arquivo.pub  
