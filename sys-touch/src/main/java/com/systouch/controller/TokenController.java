@@ -33,6 +33,7 @@ public class TokenController {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    // Faz o login com os dados informados
     @PostMapping("/login")
     public ResponseEntity<LoginDTOResponse> login(@RequestBody LoginDTORequest request){
         // verifica no banco se existe algum usuario com o nome de usuario informado.
@@ -44,15 +45,24 @@ public class TokenController {
             throw new BadCredentialsException("Usuário ou senha invalido");
         }
 
+        // Define o tempo de duração do token
         var now = Instant.now();
-        var expiresIn = 300L;
+        var expiresIn = 300L; // Exatamente 5 minutos, mas poderia ser o tempo que quiser desde quando este seja em segundos
 
+        // escopo: retorno da regra definida para o usuario logado
         var scopes = user.get().getRoles()
                               .stream()
                               .map(Role::getName)
                               .collect(Collectors.joining(""));
 
 
+        // Criação de regras do JWT, passando o
+        // issuer(tag)
+        // subject(id do usuario)
+        // issuedAt(exato momento)
+        // expiresAt(tempo de expiração do token)
+        // claim(regra do usuário(BASIC ou ADMIN))
+        // build(fecha as configurações)
         var claims = JwtClaimsSet.builder()
                 .issuer("backend")
                 .subject(user.get().getUserId().toString())
@@ -64,6 +74,7 @@ public class TokenController {
         // Recupera o token criptografado e envia para a requisição de login como resposta;
         var jetValues = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
+        // Retorna o token ja montado com o tempo de expiração definido(5 minutos)
         return ResponseEntity.ok(new LoginDTOResponse(jetValues, expiresIn));
 
 
